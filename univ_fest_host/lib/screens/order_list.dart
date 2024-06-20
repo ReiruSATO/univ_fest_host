@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:univ_fest_host/main.dart';
 
-class OrderList extends StatelessWidget {
-  const OrderList({super.key});
+class OrderListView extends StatelessWidget {
+  const OrderListView({super.key});
 
   @override
   Widget build(BuildContext context) {
