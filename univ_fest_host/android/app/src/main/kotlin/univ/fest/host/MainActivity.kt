@@ -1,4 +1,4 @@
-package com.example.univ_fest_host
+package univ.fest.host
 
 import io.flutter.embedding.android.FlutterActivity
 

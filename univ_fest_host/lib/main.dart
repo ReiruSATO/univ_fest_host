@@ -4,11 +4,20 @@ import 'package:univ_fest_host/screens/order_list.dart';
 import 'package:univ_fest_host/screens/regist_menu.dart';
 import 'package:univ_fest_host/screens/scan.dart';
 import 'package:camera/camera.dart';
+import 'dart:ui' as ui;
+import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final List<CameraDescription> cameras = await availableCameras();
   final CameraDescription firstCamera = cameras.first;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp(camera: firstCamera));
 }
 
@@ -20,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Generated App',
+      title: 'Univ Fest Host',
       theme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.blue,
@@ -78,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tab App'),
+        title: const Text('Host'),
       ),
       body: TabBarView(
         controller: _tabController,
@@ -96,8 +105,8 @@ class _MyHomePageState extends State<MyHomePage>
 
   List<Widget> _buildTabPages() {
     return [
-      const AddOrderView(),
       const OrderListView(),
+      const AddOrderView(),
       ScanView(camera: widget.camera),
       const RegistMenuView(),
     ];

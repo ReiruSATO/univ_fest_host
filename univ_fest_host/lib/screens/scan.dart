@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:univ_fest_host/main.dart';
 import 'package:camera/camera.dart';
 
 class ScanView extends StatelessWidget {
@@ -22,7 +21,6 @@ class MyScanPage extends StatefulWidget {
   final CameraDescription camera;
 
   @override
-  // ignore: library_private_types_in_public_api
   _MyScanPageState createState() => _MyScanPageState();
 }
 
@@ -35,7 +33,7 @@ class _MyScanPageState extends State<MyScanPage> {
     super.initState();
     _controller = CameraController(
       widget.camera,
-      ResolutionPreset.medium,
+      ResolutionPreset.high,
     );
     _initializeControllerFutre = _controller.initialize();
   }
@@ -49,7 +47,10 @@ class _MyScanPageState extends State<MyScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        color: Colors.black,
+        alignment: Alignment.bottomCenter,
+        padding: const EdgeInsets.all(20),
         child: FutureBuilder(
           future: _initializeControllerFutre,
           builder: (context, snapshot) {

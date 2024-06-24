@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "327456366591",
+    "firebase_url": "https://univ-fest-mobile-order-default-rtdb.firebaseio.com",
+    "project_id": "univ-fest-mobile-order",
+    "storage_bucket": "univ-fest-mobile-order.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327456366591:android:a775a53c4774e5610091ca",
+        "android_client_info": {
+          "package_name": "univ.fest.host"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327456366591-2651arvrusp99n87d049ehmo185ltiq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "univ.fest.host",
+            "certificate_hash": "2eab848585faed2170b74130e90aabc4ae595363"
+          }
+        },
+        {
+          "client_id": "327456366591-cbpj2e4i8deotdojnajfgbl7gusihd7q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4tWhT153005I4Se37Z19k2qUgl3-xg34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327456366591-cbpj2e4i8deotdojnajfgbl7gusihd7q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327456366591-det6vcs96ta2jqkchlqmv78466i6mdi1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.univFest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
