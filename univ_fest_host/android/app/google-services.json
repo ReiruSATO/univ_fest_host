@@ -8,6 +8,90 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:327456366591:android:55a229a0de7a275c0091ca",
+        "android_client_info": {
+          "package_name": "com.example.univ_fest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327456366591-2hb0gv87u9h1srkflh65592t94hbc820.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.univ_fest",
+            "certificate_hash": "83fcefec29a1b8dbc2544e24bf9df3bd463cb6ba"
+          }
+        },
+        {
+          "client_id": "327456366591-2ps5biaafmsn26b45hfpm813d1mt09ot.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.univ_fest",
+            "certificate_hash": "2eab848585faed2170b74130e90aabc4ae595363"
+          }
+        },
+        {
+          "client_id": "327456366591-ao2sksvu3042gbrcr0eo0rcmv9i2ndrs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.univ_fest",
+            "certificate_hash": "d3caae81c08caafd6110be31829d4d42c6ca8ad3"
+          }
+        },
+        {
+          "client_id": "327456366591-d8b6so8o28mbmst421b95h3u3febbct3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.univ_fest",
+            "certificate_hash": "c5d4c9dc54bb011de583bfd7262cc5eef78aeb24"
+          }
+        },
+        {
+          "client_id": "327456366591-pnindd7kbacqcn6qmmrmjmc4caio1855.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.univ_fest",
+            "certificate_hash": "277d8f64ebe82073106d9ab15a0160e57a4bf8ae"
+          }
+        },
+        {
+          "client_id": "327456366591-r2ig36bv1mv6sdojoe0vfi3201pg77l6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.univ_fest",
+            "certificate_hash": "fd2ffaeaed0c3c70820969015abb6639edf687bd"
+          }
+        },
+        {
+          "client_id": "327456366591-cbpj2e4i8deotdojnajfgbl7gusihd7q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4tWhT153005I4Se37Z19k2qUgl3-xg34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327456366591-cbpj2e4i8deotdojnajfgbl7gusihd7q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327456366591-det6vcs96ta2jqkchlqmv78466i6mdi1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.univFest"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:327456366591:android:a775a53c4774e5610091ca",
         "android_client_info": {
           "package_name": "univ.fest.host"

@@ -4,12 +4,10 @@ import 'package:univ_fest_host/screens/order_list.dart';
 import 'package:univ_fest_host/screens/regist_menu.dart';
 import 'package:univ_fest_host/screens/scan.dart';
 import 'package:camera/camera.dart';
-import 'dart:ui' as ui;
-import 'dart:convert';
-import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     super.initState();
+    doSignin();
     _tabController = TabController(
       vsync: this,
       length: _tabs.length,
@@ -86,9 +85,6 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Host'),
-      ),
       body: TabBarView(
         controller: _tabController,
         children: _buildTabPages(),
@@ -106,9 +102,27 @@ class _MyHomePageState extends State<MyHomePage>
   List<Widget> _buildTabPages() {
     return [
       const OrderListView(),
-      const AddOrderView(),
+      AddOrderView(),
       ScanView(camera: widget.camera),
       const RegistMenuView(),
     ];
+  }
+
+  void doSignin() {
+    signInWithGoogle().then((value) {
+      if (value.user != null) {
+        //fire();
+      }
+    });
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? user = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? auth = await user?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: auth?.accessToken,
+      idToken: auth?.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

@@ -65,8 +65,9 @@ class DefaultFirebaseOptions {
     projectId: 'univ-fest-mobile-order',
     databaseURL: 'https://univ-fest-mobile-order-default-rtdb.firebaseio.com',
     storageBucket: 'univ-fest-mobile-order.appspot.com',
-    androidClientId: '327456366591-2hb0gv87u9h1srkflh65592t94hbc820.apps.googleusercontent.com',
+    androidClientId: '327456366591-2651arvrusp99n87d049ehmo185ltiq1.apps.googleusercontent.com',
     iosClientId: '327456366591-kmsdhvmq444okts3205lc8tbl7aqdno1.apps.googleusercontent.com',
     iosBundleId: 'com.example.univFestHost',
   );
+
 }
