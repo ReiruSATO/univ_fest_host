@@ -110,6 +110,7 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
       _priceInput.text = '0';
     });
     DatabaseReference ref = FirebaseDatabase.instance.ref('menus/$usrID/');
+    print("ref at $usrID");
     final snapshot = await ref.get();
 
     if (!snapshot.exists) return;
