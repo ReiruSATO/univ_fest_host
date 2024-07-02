@@ -1,66 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:univ_fest_host/screens/scandata.dart';
 
 class ScanView extends StatelessWidget {
-  const ScanView({super.key, required this.camera});
-
-  final CameraDescription camera;
+  const ScanView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(),
-      home: MyScanPage(camera: camera),
+      home: MyScanPage(),
     );
   }
 }
 
 class MyScanPage extends StatefulWidget {
-  const MyScanPage({super.key, required this.camera});
-
-  final CameraDescription camera;
+  const MyScanPage({super.key});
 
   @override
-  _MyScanPageState createState() => _MyScanPageState();
+  State<MyScanPage> createState() => _MyScanPageState();
 }
 
 class _MyScanPageState extends State<MyScanPage> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFutre;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = CameraController(
-      widget.camera,
-      ResolutionPreset.high,
-    );
-    _initializeControllerFutre = _controller.initialize();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  MobileScannerController controller = MobileScannerController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.black,
-        alignment: Alignment.bottomCenter,
-        padding: const EdgeInsets.all(20),
-        child: FutureBuilder(
-          future: _initializeControllerFutre,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return CameraPreview(_controller);
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF66FF99),
+        title: const Text('QR Code Scanner'),
+      ),
+      body: Builder(
+        builder: (context) {
+          return MobileScanner(
+            controller: controller,
+            fit: BoxFit.contain,
+            onDetect: (scandata) {
+              setState(() {
+                controller.stop();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ScanDataWidget(scandata: scandata);
+                    },
+                  ),
+                );
+              });
+            },
+          );
+        },
       ),
     );
   }
