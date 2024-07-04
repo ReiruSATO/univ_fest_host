@@ -9,7 +9,7 @@ class ScanView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
+      theme: ThemeData.dark(),
       home: MyScanPage(camera: camera),
     );
   }
@@ -47,6 +47,9 @@ class _MyScanPageState extends State<MyScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scan'),
+      ),
       body: Container(
         color: Colors.black,
         alignment: Alignment.bottomCenter,
