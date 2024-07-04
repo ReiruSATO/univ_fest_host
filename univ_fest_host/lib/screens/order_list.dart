@@ -36,7 +36,7 @@ class _MyOrderListPageState extends State<MyOrderListPage> {
         child: Column(
           children: <Widget>[
             const Text(
-              'Add Order Page',
+              'Order List Page',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: ui.FontWeight.w500,
