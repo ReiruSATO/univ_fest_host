@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:univ_fest_host/screens/widgets/scan_data.dart';
+import 'package:univ_fest_host/screens/scandata.dart';
 
 class ScanView extends StatelessWidget {
   const ScanView({super.key});
@@ -18,7 +18,7 @@ class MyScanPage extends StatefulWidget {
   const MyScanPage({super.key});
 
   @override
-  _MyScanPageState createState() => _MyScanPageState();
+  State<MyScanPage> createState() => _MyScanPageState();
 }
 
 class _MyScanPageState extends State<MyScanPage> {
