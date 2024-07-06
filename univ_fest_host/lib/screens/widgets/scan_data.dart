@@ -40,7 +40,7 @@ class ScanDataWidget extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-            // ここにボタンを押した時に呼ばれるコードを書く
+          // ここにボタンを押した時に呼ばれるコードを書く
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ScanView()),

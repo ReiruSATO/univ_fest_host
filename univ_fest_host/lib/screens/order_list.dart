@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
-import 'dart:convert';
-import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
-import '../firebase_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderListView extends StatelessWidget {
   const OrderListView({super.key});
@@ -12,7 +8,7 @@ class OrderListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
+      theme: ThemeData.dark(),
       home: const MyOrderListPage(),
     );
   }
@@ -27,21 +23,18 @@ class MyOrderListPage extends StatefulWidget {
 
 class _MyOrderListPageState extends State<MyOrderListPage> {
   final _controller = TextEditingController();
+  final usrID = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Order List'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: <Widget>[
-            const Text(
-              'Order List Page',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: ui.FontWeight.w500,
-              ),
-            ),
             const Padding(padding: EdgeInsets.all(10)),
             TextField(
               controller: _controller,
@@ -55,7 +48,7 @@ class _MyOrderListPageState extends State<MyOrderListPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.open_in_new),
+        child: const Icon(Icons.refresh),
         onPressed: () {
           fire();
         },
@@ -64,20 +57,25 @@ class _MyOrderListPageState extends State<MyOrderListPage> {
   }
 
   void fire() async {
-    var msg = '';
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var msg = '$usrID\n';
+    final ref = FirebaseDatabase.instance.ref('menus');
+    /*for (var e in snapshot.children) {
+      /*for (var ee in e.children) {
+        for (var eee in ee.child('items').children) {
+          msg += '${eee.value},';
+        }
+        msg += '\n';
+      }*/
+    }*/
+
+    /*FirebaseFirestore firestore = FirebaseFirestore.instance;
     final snapshot = await firestore.collection('order-list').get();
     for (var element in snapshot.docChanges) {
       final name = element.doc.get('name');
       final price = element.doc.get('price');
       final quantity = element.doc.get('quantity');
       msg += "$name: $price yen x$quantity\n";
-    }
-    /*final dl = await firestore.collection('order-list').get();
-    final name = dl.docChanges[3].doc.get('name');
-    final price = dl.docChanges[3].doc.get('price');
-    final quantity = dl.docChanges[3].doc.get('quantity');
-    msg = '$name: $price yen x$quantity';*/
+    }*/
     _controller.text = msg;
   }
 }
