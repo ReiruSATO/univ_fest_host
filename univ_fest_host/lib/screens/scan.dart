@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:univ_fest_host/screens/scandata.dart';
+import 'package:univ_fest_host/screens/widgets/scan_data.dart';
 
 class ScanView extends StatelessWidget {
   const ScanView({super.key});
@@ -8,8 +8,8 @@ class ScanView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
-      home: MyScanPage(),
+      theme: ThemeData.dark(),
+      home: const MyScanPage(),
     );
   }
 }
