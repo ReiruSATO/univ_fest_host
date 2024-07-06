@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage>
     return [
       const OrderListView(),
       AddOrderView(),
-      ScanView(camera: widget.camera),
+      const ScanView(),
       const RegistMenuView(),
     ];
   }
