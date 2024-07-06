@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:univ_fest_host/screens/widgets/scan_data.dart';
 
@@ -10,7 +9,7 @@ class ScanView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: MyScanPage(),
+      home: const MyScanPage(),
     );
   }
 }
