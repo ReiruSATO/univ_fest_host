@@ -8,8 +8,8 @@ class ScanView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
-      home: MyScanPage(),
+      theme: ThemeData.dark(),
+      home: const MyScanPage(),
     );
   }
 }
