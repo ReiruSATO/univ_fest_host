@@ -185,7 +185,6 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
               ],
             ),
             */
-
             const Padding(padding: EdgeInsets.all(10)),
                 Expanded(
                   child: FloatingActionButton(
