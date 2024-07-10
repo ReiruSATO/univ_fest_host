@@ -26,7 +26,6 @@ class RegistMenuPage extends StatefulWidget {
 }
 
 class _RegistMenuPageState extends State<RegistMenuPage> {
-
   /*
   // まるやま
   // 画像を入れられるけど，Xfileは画像形式ではない
@@ -81,21 +80,22 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
   //まるやま
   // _image に画像が入る関数
   void _downloadImage(String url) async {
-    if (!_isImageLoaded) {  // 画像をまだダウンロードしていない場合に処理を実行
-        // Firebase Storage上の画像のURLを取得
-        String downloadURL =
-            await FirebaseStorage.instance.ref(url).getDownloadURL();
-        // URLから画像を取得
-        final imgProvider = CachedNetworkImageProvider(downloadURL);
-        setState(() {
-          //  ここで完了
-            _image = imgProvider;
-            _isImageLoaded = true;
-        });
+    User? user = FirebaseAuth.instance.currentUser;
+    debugPrint('user: $user');
+    if (!_isImageLoaded) {
+      // 画像をまだダウンロードしていない場合に処理を実行
+      // Firebase Storage上の画像のURLを取得
+      String downloadURL =
+          await FirebaseStorage.instance.ref(url).getDownloadURL();
+      // URLから画像を取得
+      final imgProvider = CachedNetworkImageProvider(downloadURL);
+      setState(() {
+        //  ここで完了
+        _image = imgProvider;
+        _isImageLoaded = true;
+      });
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -167,43 +167,33 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
                 ),
 
                 // 実際の入力する場所
-                /*
+
                 const Padding(padding: EdgeInsets.all(10)),
                 Expanded(
-                    child: _image == null
-                        ? CircularProgressIndicator() // _imageがnullになっている間はグルグルを表示
-                        : Container(
-                            decoration: BoxDecoration(
-                                //選択した画像表示
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: _image!
-                                )
-                            )
-                        ),
+                  child: _image == null
+                      ? CircularProgressIndicator() // _imageがnullになっている間はグルグルを表示
+                      : Container(
+                          decoration: BoxDecoration(
+                              //選択した画像表示
+                              image: DecorationImage(
+                                  fit: BoxFit.cover, image: _image!))),
                 ),
-              ],
-            ),
-            */
-            const Padding(padding: EdgeInsets.all(10)),
-                Expanded(
-                  child: FloatingActionButton(
-                    // () => はボタンを押したときに発動 ( ないとボタン描写されたタイミング )
-                    onPressed: () => _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),
-                    child: const Icon(Icons.movie_creation)
-                    
-                    //ElevatedButton(onPressed: () => _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),)
-                  )
-                ),
-              ],
-            ),
 
+                const Padding(padding: EdgeInsets.all(10)),
+                Expanded(
+                    child: FloatingActionButton(
+                        // () => はボタンを押したときに発動 ( ないとボタン描写されたタイミング )
+                        onPressed: () => _downloadImage(
+                            'images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),
+                        child: const Icon(Icons.movie_creation)
+
+                        //ElevatedButton(onPressed: () => _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),)
+                        )),
+              ],
+            ),
           ],
         ),
       ),
-
-      
-
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
@@ -212,8 +202,6 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
       ),
     );
   }
-
-  
 
   void setMenu() async {
     if (_nameInput.text == '') return;
