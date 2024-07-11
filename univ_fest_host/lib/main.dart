@@ -9,6 +9,8 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:firebase_app_check/firebase_app_check.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final List<CameraDescription> cameras = await availableCameras();
@@ -16,6 +18,15 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  //まるやま
+  //Firebase.initializeApp() を呼び出した後すぐに実行する
+  //-----AppCheckの初期化コード-----//
+  await FirebaseAppCheck.instance.activate(
+          androidProvider: kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
+    );
+   //------------------------------//
+
   runApp(MyApp(camera: firstCamera));
 }
 
