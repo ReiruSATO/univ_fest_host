@@ -9,6 +9,7 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:flutter/foundation.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
 Future<void> main() async {
@@ -19,13 +20,13 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  
   //まるやま
   //Firebase.initializeApp() を呼び出した後すぐに実行する
   //-----AppCheckの初期化コード-----//
-  await FirebaseAppCheck.instance.activate(
-          androidProvider: kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
-    );
-   //------------------------------//
+  
+  //------------------------------//
+   
 
   runApp(MyApp(camera: firstCamera));
 }
@@ -136,4 +137,4 @@ class _MyHomePageState extends State<MyHomePage>
     );
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
-}
+    }

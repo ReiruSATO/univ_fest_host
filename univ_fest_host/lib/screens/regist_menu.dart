@@ -72,7 +72,7 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
         //その取得したデータを変数に入れ
         _image = XFile(pickedFile.path);
         // ↑つまりこいつが画像データ
-        // =========ここまで================================================================
+        // =========ここまで===========
       }
     });
   }
