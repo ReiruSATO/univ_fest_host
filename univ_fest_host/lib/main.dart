@@ -24,6 +24,7 @@ Future<void> main() async {
   //まるやま
   //Firebase.initializeApp() を呼び出した後すぐに実行する
   //-----AppCheckの初期化コード-----//
+  
   await FirebaseAppCheck.instance.activate(
       appleProvider:
           kReleaseMode ? AppleProvider.deviceCheck : AppleProvider.debug,
@@ -31,6 +32,7 @@ Future<void> main() async {
           kReleaseMode ? AndroidProvider.playIntegrity :
 	  AndroidProvider.debug,
     );
+    
   //------------------------------//
    
   runApp(MyApp(camera: firstCamera));

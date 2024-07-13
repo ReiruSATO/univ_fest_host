@@ -41,6 +41,22 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
   final _nameInput = TextEditingController();
   final _priceInput = TextEditingController();
 
+  Future upload() async {
+  // 画像をスマホのギャラリーから取得
+  final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  // 画像を取得できた場合はFirebaseStorageにアップロードする
+  if (image != null) {
+    final imageFile = File(image.path);
+    FirebaseStorage storage = FirebaseStorage.instance;
+    try {
+      await storage.ref('sample.png').putFile(imageFile);
+    } catch (e) {
+      print(e);
+    }
+  }
+  return;
+}
+
   @override
   void initState() {
     super.initState();
@@ -77,6 +93,12 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
   }
   */
 
+  Future<Image> download() async { // 非同期処理で取得する
+    final Reference ref = FirebaseStorage.instance.ref().child('sample.png');
+    String imageUrl = await ref.getDownloadURL();
+    return Image.network(imageUrl);
+  }
+
   //まるやま
   // _image に画像が入る関数
   void _downloadImage(String url) async {
@@ -97,15 +119,26 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
     }
   }
 
+  
+  /// ユーザIDの取得
+  final userID = FirebaseAuth.instance.currentUser?.uid ?? '';
+
   @override
   Widget build(BuildContext context) {
-    /*
     //　まるやま
     if (!_isImageLoaded) { // 画像をまだダウンロードしていない場合に関数を実行
         // 引数にFirebase Storage上の画像のURL（例: 'Images/sample.png'）を渡す
         _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png');
     }
-    */
+
+    FutureBuilder(
+      future: download(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return snapshot.data ?? Container();
+      },
+    );
+
+    
 
     return Scaffold(
       appBar: AppBar(
@@ -157,6 +190,8 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
             //  まるやま
             //  画像表示のボタン追加
             //  Padding は余白機能
+
+
             const Padding(padding: EdgeInsets.all(10)),
             Row(
               children: <Widget>[
@@ -167,33 +202,31 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
                 ),
 
                 // 実際の入力する場所
-
-                const Padding(padding: EdgeInsets.all(10)),
-                Expanded(
-                  child: _image == null
-                      ? CircularProgressIndicator() // _imageがnullになっている間はグルグルを表示
-                      : Container(
-                          decoration: BoxDecoration(
-                              //選択した画像表示
-                              image: DecorationImage(
-                                  fit: BoxFit.cover, image: _image!))),
-                ),
-
+                /*
                 const Padding(padding: EdgeInsets.all(10)),
                 Expanded(
                     child: FloatingActionButton(
                         // () => はボタンを押したときに発動 ( ないとボタン描写されたタイミング )
-                        onPressed: () => _downloadImage(
-                            'images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),
+                        onPressed: () => _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),
                         child: const Icon(Icons.movie_creation)
-
                         //ElevatedButton(onPressed: () => _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),)
                         )),
+                        */
+
+                const Padding(padding: EdgeInsets.all(10)),
+                Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await upload();
+                      },
+                    child: const Text('画像をアップロード'))),
+              
               ],
             ),
           ],
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
