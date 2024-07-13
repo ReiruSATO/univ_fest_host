@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegistMenuView extends StatelessWidget {
   const RegistMenuView({super.key});
@@ -26,6 +29,17 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
   final _nameInput = TextEditingController();
   final _priceInput = TextEditingController();
 
+  late File imageFile;
+
+  Future upload() async {
+    // 画像をスマホのギャラリーから取得
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      imageFile = File(image.path);
+    }
+    return;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +55,9 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
     _nameInput.dispose();
     _priceInput.dispose();
   }
+
+  /// ユーザIDの取得
+  final userID = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +88,12 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
                 ),
               ],
             ),
+
             const Padding(padding: EdgeInsets.all(10)),
             Row(
               children: <Widget>[
                 const Text(
-                  'price:',
+                  'price :',
                   style: TextStyle(fontSize: 24),
                 ),
                 const Padding(padding: EdgeInsets.all(10)),
@@ -85,6 +103,30 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
                     style: const TextStyle(fontSize: 24),
                     minLines: 1,
                     maxLines: 1,
+                  ),
+                ),
+              ],
+            ),
+
+            //  まるやま
+            //  画像表示のボタン追加
+            //  Padding は余白機能
+
+            const Padding(padding: EdgeInsets.all(10)),
+            Row(
+              children: <Widget>[
+                // 左側のただの表示　" photo : "
+                const Text(
+                  'photo :',
+                  style: TextStyle(fontSize: 24),
+                ),
+                const Padding(padding: EdgeInsets.all(10)),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await upload();
+                    },
+                    child: const Text('画像をアップロード'),
                   ),
                 ),
               ],
@@ -110,7 +152,6 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
       _priceInput.text = '0';
     });
     DatabaseReference ref = FirebaseDatabase.instance.ref('menus/$usrID/');
-    print("ref at $usrID");
     final snapshot = await ref.get();
 
     if (!snapshot.exists) return;
@@ -123,5 +164,11 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
       "$dirNum/name": name,
       "$dirNum/price": price,
     });
+    FirebaseStorage storage = FirebaseStorage.instance;
+    try {
+      await storage.ref('images/menus/$usrID/$dirNum.png').putFile(imageFile);
+    } catch (e) {
+      print(e);
+    }
   }
 }
