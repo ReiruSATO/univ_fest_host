@@ -26,36 +26,16 @@ class RegistMenuPage extends StatefulWidget {
 }
 
 class _RegistMenuPageState extends State<RegistMenuPage> {
-  /*
-  // まるやま
-  // 画像を入れられるけど，Xfileは画像形式ではない
-  XFile? _image;
-  final imagePicker = ImagePicker();
-  */
-
-  //  まるやま
+  // 画像表示用の変数
   ImageProvider? _image;
-  bool _isImageLoaded = false; // 画像をすでにダウンロードしたかどうかの判定用
+  File? _imageFile;
 
-  final usrID = FirebaseAuth.instance.currentUser?.uid ?? '';
+  // text input
   final _nameInput = TextEditingController();
   final _priceInput = TextEditingController();
 
-  Future upload() async {
-  // 画像をスマホのギャラリーから取得
-  final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  // 画像を取得できた場合はFirebaseStorageにアップロードする
-  if (image != null) {
-    final imageFile = File(image.path);
-    FirebaseStorage storage = FirebaseStorage.instance;
-    try {
-      await storage.ref('sample.png').putFile(imageFile);
-    } catch (e) {
-      print(e);
-    }
-  }
-  return;
-}
+  // ユーザIDの取得
+  final userID = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   @override
   void initState() {
@@ -75,71 +55,8 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
     _image = null;
   }
 
-  /*
-  // まるやま
-  // ギャラリーから写真を取得する関数
-  Future getImageFromGarally() async {
-    // await　は非同期にするため
-    // firebase の strage から持ってくる
-    final pickedFile = await imagePicker.pickImage(source: FirebaseStorage.instance);
-    setState(() {
-      if (pickedFile != null) {
-        //その取得したデータを変数に入れ
-        _image = XFile(pickedFile.path);
-        // ↑つまりこいつが画像データ
-        // =========ここまで===========
-      }
-    });
-  }
-  */
-
-  Future<Image> download() async { // 非同期処理で取得する
-    final Reference ref = FirebaseStorage.instance.ref().child('sample.png');
-    String imageUrl = await ref.getDownloadURL();
-    return Image.network(imageUrl);
-  }
-
-  //まるやま
-  // _image に画像が入る関数
-  void _downloadImage(String url) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    debugPrint('user: $user');
-    if (!_isImageLoaded) {
-      // 画像をまだダウンロードしていない場合に処理を実行
-      // Firebase Storage上の画像のURLを取得
-      String downloadURL =
-          await FirebaseStorage.instance.ref(url).getDownloadURL();
-      // URLから画像を取得
-      final imgProvider = CachedNetworkImageProvider(downloadURL);
-      setState(() {
-        //  ここで完了
-        _image = imgProvider;
-        _isImageLoaded = true;
-      });
-    }
-  }
-
-  
-  /// ユーザIDの取得
-  final userID = FirebaseAuth.instance.currentUser?.uid ?? '';
-
   @override
   Widget build(BuildContext context) {
-    //　まるやま
-    if (!_isImageLoaded) { // 画像をまだダウンロードしていない場合に関数を実行
-        // 引数にFirebase Storage上の画像のURL（例: 'Images/sample.png'）を渡す
-        _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png');
-    }
-
-    FutureBuilder(
-      future: download(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return snapshot.data ?? Container();
-      },
-    );
-
-    
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Regist Menu'),
@@ -191,7 +108,6 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
             //  画像表示のボタン追加
             //  Padding は余白機能
 
-
             const Padding(padding: EdgeInsets.all(10)),
             Row(
               children: <Widget>[
@@ -201,53 +117,82 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
                   style: TextStyle(fontSize: 24),
                 ),
 
-                // 実際の入力する場所
-                /*
-                const Padding(padding: EdgeInsets.all(10)),
-                Expanded(
-                    child: FloatingActionButton(
-                        // () => はボタンを押したときに発動 ( ないとボタン描写されたタイミング )
-                        onPressed: () => _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),
-                        child: const Icon(Icons.movie_creation)
-                        //ElevatedButton(onPressed: () => _downloadImage('images/menus/AsrU482t2zV89FS2s9KomNJjIDz2/0.png'),)
-                        )),
-                        */
-
                 const Padding(padding: EdgeInsets.all(10)),
                 Expanded(
                     child: ElevatedButton(
-                      onPressed: () async {
-                        await upload();
-                      },
-                    child: const Text('画像をアップロード'))),
-              
+                        onPressed: () async {
+                          await setImage();
+                        },
+                        child: const Text('画像をアップロード'))),
               ],
             ),
+            Flexible(
+                child: _image != null ? Image(image: _image!) : Container()),
           ],
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {
-          setMenu();
+        onPressed: () async {
+          await setMenu();
         },
       ),
     );
   }
 
-  void setMenu() async {
-    if (_nameInput.text == '') return;
-    var name = _nameInput.text;
-    var price = int.parse(_priceInput.text);
-    var image = _image;
+  /// フォームの初期化
+  void inputClear() {
     setState(() {
-      _nameInput.text = '';
-      _priceInput.text = '0';
+      _nameInput.clear();
+      _priceInput.clear();
       _image = null;
+      _imageFile = null;
     });
-    DatabaseReference ref = FirebaseDatabase.instance.ref('menus/$usrID/');
-    print("ref at $usrID");
+  }
+
+  /// 画像をスマホのギャラリーから取得
+  /// 選択した画像を_imageにセットする関数
+  Future<void> setImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+    _imageFile = File(image.path);
+    setState(() {
+      _image = FileImage(_imageFile!);
+    });
+  }
+
+  /// FirebaseStorageに選択されている画像をアップロードする関数
+  Future<String?> uploadMenuImage(File? imageFile, String menuid) async {
+    if (imageFile == null) {
+      debugPrint("imageFile is null");
+      return null;
+    }
+    try {
+      final menuImgRef =
+          FirebaseStorage.instance.ref('images/menus/$userID/$menuid');
+      final downloadURL = await menuImgRef.putFile(imageFile).then((value) {
+        debugPrint("uploading image completed!");
+        return value.ref.getDownloadURL();
+      });
+      debugPrint("downloadURL: $downloadURL");
+      await FirebaseDatabase.instance
+          .ref('menus/$userID/$menuid')
+          .update({'image': downloadURL});
+      return downloadURL;
+    } catch (e) {
+      debugPrint(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> setMenu() async {
+    if (_nameInput.text == '') return;
+    final name = _nameInput.text;
+    final price = int.parse(_priceInput.text);
+    DatabaseReference ref = FirebaseDatabase.instance.ref('menus/$userID/');
+    debugPrint("ref at $userID");
     final snapshot = await ref.get();
 
     if (!snapshot.exists) return;
@@ -256,10 +201,18 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
       if (e.child("name").value == name) break;
       dirNum++;
     }
+
+    final imageURL = await uploadMenuImage(_imageFile, dirNum.toString());
+    debugPrint("imageURL: $imageURL");
+
     await ref.update({
       "$dirNum/name": name,
       "$dirNum/price": price,
-      "$dirNum/image": image,
+      "$dirNum/image": imageURL,
     });
+
+    debugPrint("setting menu $name completed!");
+
+    inputClear();
   }
 }
