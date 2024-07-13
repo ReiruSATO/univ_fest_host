@@ -23,7 +23,6 @@ class ScanDataWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF66FF99),
         title: const Text('スキャンの結果'),
       ),
       body: Card(
@@ -40,7 +39,7 @@ class ScanDataWidget extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-            // ここにボタンを押した時に呼ばれるコードを書く
+          // ここにボタンを押した時に呼ばれるコードを書く
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ScanView()),

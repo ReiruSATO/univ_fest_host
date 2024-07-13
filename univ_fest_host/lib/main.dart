@@ -5,7 +5,6 @@ import 'package:univ_fest_host/screens/add_order.dart';
 import 'package:univ_fest_host/screens/order_list.dart';
 import 'package:univ_fest_host/screens/regist_menu.dart';
 import 'package:univ_fest_host/screens/scan.dart';
-import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';

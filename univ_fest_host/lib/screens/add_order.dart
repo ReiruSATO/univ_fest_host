@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AddOrderView extends StatelessWidget {
@@ -94,13 +93,13 @@ class _MyAddOrderPageState extends State<MyAddOrderPage> {
   void loadOrder() async {
     nameMenu = [];
     priceMenu = [];
-    var imgURL;
+    //var imgURL;
     var snapshot = await FirebaseDatabase.instance.ref('menus/$usrID/').get();
     if (!snapshot.exists) return;
     for (var e in snapshot.children) {
-      imgURL = storage
+      /*imgURL = storage
           .ref('images/menus/$usrID/${e.key.toString()}.png')
-          .getDownloadURL();
+          .getDownloadURL();*/
       nameMenu.add(e.child("name").value.toString());
       priceMenu.add(int.parse(e.child("price").value.toString()));
     }
