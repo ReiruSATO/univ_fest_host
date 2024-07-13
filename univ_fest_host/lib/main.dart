@@ -13,8 +13,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final List<CameraDescription> cameras = await availableCameras();
-  final CameraDescription firstCamera = cameras.first;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,13 +22,11 @@ Future<void> main() async {
     androidProvider:
         kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
   );
-  runApp(MyApp(camera: firstCamera));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.camera});
-
-  final CameraDescription camera;
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +38,13 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xff2196f3),
         canvasColor: const Color(0xfffafafa),
       ),
-      home: MyHomePage(camera: camera),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.camera});
-
-  final CameraDescription camera;
+  const MyHomePage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
