@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:univ_fest_host/screens/add_order.dart';
 import 'package:univ_fest_host/screens/order_list.dart';
 import 'package:univ_fest_host/screens/regist_menu.dart';
 import 'package:univ_fest_host/screens/scan.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:univ_fest_host/screens/shop_info_screen.dart';
+import 'package:univ_fest_host/utils/authentication.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'package:flutter/foundation.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +23,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MyApp(camera: firstCamera));
 }
 
@@ -26,6 +34,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Authentication.initializeFirebase(context: context);
+
     return MaterialApp(
       title: 'Univ Fest Host',
       theme: ThemeData(
@@ -68,6 +78,10 @@ class _MyHomePageState extends State<MyHomePage>
       text: 'Regist Menu',
       icon: Icon(Icons.add_to_photos, color: Colors.white),
     ),
+    Tab(
+      text: 'Shop',
+      icon: Icon(Icons.shop, color: Colors.white),
+    ),
   ];
 
   late TabController _tabController;
@@ -105,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage>
       AddOrderView(),
       const ScanView(),
       const RegistMenuView(),
+      ShopInfoScreen(),
     ];
   }
 
