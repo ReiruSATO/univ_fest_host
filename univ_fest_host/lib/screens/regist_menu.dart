@@ -55,9 +55,6 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
     _image = null;
   }
 
-  /// ユーザIDの取得
-  final userID = FirebaseAuth.instance.currentUser?.uid ?? '';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +89,6 @@ class _RegistMenuPageState extends State<RegistMenuPage> {
             Row(
               children: <Widget>[
                 const Text(
-                  'price :',
                   'price :',
                   style: TextStyle(fontSize: 24),
                 ),

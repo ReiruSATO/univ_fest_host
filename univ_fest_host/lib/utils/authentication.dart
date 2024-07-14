@@ -71,9 +71,7 @@ class Authentication {
         final CameraDescription firstCamera = cameras.first;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => MyHomePage(
-              camera: firstCamera,
-            ),
+            builder: (context) => const MyHomePage(),
           ),
         );
       }

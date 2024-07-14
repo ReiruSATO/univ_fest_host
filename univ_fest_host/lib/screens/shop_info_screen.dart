@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:univ_fest_host/main.dart';
 import '../utils/authentication.dart';
 
@@ -15,11 +20,15 @@ class _ShopInfoScreenState extends State<ShopInfoScreen> {
   late User _user;
   bool _isSigningOut = false;
 
-  Route _routeToSignInScreen(CameraDescription camera) {
+  ImageProvider? _image;
+  File? _imageFile;
+  // ユーザIDの取得
+  final userID = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+  Route _routeToSignInScreen() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => MyHomePage(
-        camera: camera,
-      ),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const MyHomePage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = const Offset(-1.0, 0.0);
         var end = Offset.zero;
@@ -119,12 +128,9 @@ class _ShopInfoScreenState extends State<ShopInfoScreen> {
                         setState(() {
                           _isSigningOut = false;
                         });
-                        final List<CameraDescription> cameras =
-                            await availableCameras();
-                        final CameraDescription firstCamera = cameras.first;
                         if (context.mounted) {
-                          Navigator.of(context).pushReplacement(
-                              _routeToSignInScreen(firstCamera));
+                          Navigator.of(context)
+                              .pushReplacement(_routeToSignInScreen());
                         }
                       },
                       child: const Padding(
@@ -140,10 +146,55 @@ class _ShopInfoScreenState extends State<ShopInfoScreen> {
                         ),
                       ),
                     ),
+              const Padding(padding: EdgeInsets.all(10)),
+              Flexible(
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        await setImage();
+                        await uploadMenuImage(_imageFile);
+                      },
+                      child: const Text('画像をアップロード'))),
             ],
           ),
         ),
       ),
     );
+  }
+
+  /// FirebaseStorageに選択されている画像をアップロードする関数
+  Future<String?> uploadMenuImage(File? imageFile) async {
+    if (imageFile == null) {
+      debugPrint("imageFile is null");
+      return null;
+    }
+    try {
+      final shopImgRef =
+          FirebaseStorage.instance.ref('images/shops/$userID/image');
+      final downloadURL = await shopImgRef.putFile(imageFile).then((value) {
+        debugPrint("uploading image completed!");
+        return value.ref.getDownloadURL();
+      });
+      debugPrint("downloadURL: $downloadURL");
+      await FirebaseDatabase.instance
+          .ref('shops/$userID')
+          .update({'image': downloadURL});
+      return downloadURL;
+    } catch (e) {
+      debugPrint(e.toString());
+      return null;
+    }
+  }
+
+  /// 画像をスマホのギャラリーから取得
+  /// 選択した画像を_imageにセットする関数
+  Future<void> setImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+    _imageFile = File(image.path);
+    setState(() {
+      _image = FileImage(_imageFile!);
+    });
   }
 }
