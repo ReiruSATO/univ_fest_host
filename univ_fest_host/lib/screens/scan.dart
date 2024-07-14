@@ -28,7 +28,6 @@ class _MyScanPageState extends State<MyScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF66FF99),
         title: const Text('QR Code Scanner'),
       ),
       body: Builder(

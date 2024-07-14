@@ -39,7 +39,7 @@ class _MyOrderListPageState extends State<MyOrderListPage> {
             TextField(
               controller: _controller,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: 20,
               ),
               minLines: 1,
               maxLines: 5,
@@ -57,25 +57,12 @@ class _MyOrderListPageState extends State<MyOrderListPage> {
   }
 
   void fire() async {
-    var msg = '$usrID\n';
-    final ref = FirebaseDatabase.instance.ref('menus');
-    /*for (var e in snapshot.children) {
-      /*for (var ee in e.children) {
-        for (var eee in ee.child('items').children) {
-          msg += '${eee.value},';
-        }
-        msg += '\n';
-      }*/
-    }*/
-
-    /*FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final snapshot = await firestore.collection('order-list').get();
-    for (var element in snapshot.docChanges) {
-      final name = element.doc.get('name');
-      final price = element.doc.get('price');
-      final quantity = element.doc.get('quantity');
-      msg += "$name: $price yen x$quantity\n";
-    }*/
+    var msg = '';
+    final ref = FirebaseDatabase.instance.ref('orders/$usrID');
+    final snapshot = await ref.get();
+    for (var e in snapshot.children) {
+      msg += "Order ID: ${e.key.toString()} \n";
+    }
     _controller.text = msg;
   }
 }
