@@ -43,7 +43,7 @@ class ScanDataWidget extends StatelessWidget {
           // ここにボタンを押した時に呼ばれるコードを書く
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ScanView()),
+            MaterialPageRoute(builder: (context) => const ScanView()),
           );
         },
         label: const Text('スキャン画面へ'),

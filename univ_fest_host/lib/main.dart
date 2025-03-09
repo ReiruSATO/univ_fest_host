@@ -1,8 +1,4 @@
-import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:univ_fest_host/screens/add_order.dart';
 import 'package:univ_fest_host/screens/order_list.dart';
 import 'package:univ_fest_host/screens/regist_menu.dart';
@@ -14,8 +10,6 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'package:flutter/foundation.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
